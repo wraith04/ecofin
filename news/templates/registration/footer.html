@@ -1,0 +1,40 @@
+{% load static %}
+<footer class="site-footer">
+    <div class="footer-newsletter">
+        <h2>ECOFIN</h2>
+        <p>赋能可持续未来 <span></span>金融新闻的绿色视角</p>
+    </div>
+    <div class="footer-links">
+        <div class="footer-column">
+            <h3>主题</h3>
+            <ul>
+                <li><a href="{% url 'home' %}">首页</a></li>
+                {% for tag in tags %}
+                    <li>
+                        <a href="{% url 'news_by_tag' tag.id %}">{{ tag.tag_name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>关于</h3>
+            <ul>
+                <li><a href="#">公司信息</a></li>
+                <li><a href="#">联系方式</a></li>
+                <li><a href="#">隐私政策</a></li>
+                <li><a href="#">使用条款</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>联系我们</h3>
+            <ul class="social-links">
+                <li><a href="#"><i class="fab fa-weibo"></i>微博</a></li>
+                <li><a href="#"><i class="fab fa-xiaohongshu"></i>小红书</a></li>
+                <li><a href="#"><i class="fas fa-envelope"></i>邮件</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom text-center">
+        <p>© 2024 版权所有: ECOFIN</p>
+    </div>
+</footer>

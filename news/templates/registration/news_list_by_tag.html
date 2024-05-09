@@ -1,0 +1,260 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News List by Tag</title>
+    <!-- 引入Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <style>
+        body {
+            background-image: linear-gradient(to bottom, #ffffff 0%, #ffffff 100%);
+            height: auto;
+            min-height: 100vh;
+            overflow-y: auto;
+            background-attachment: fixed; /* 保持背景固定，不随页面滚动 */
+        }
+
+
+        .container-fluid {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+
+        }
+
+        .title {
+            color: #495057;
+            text-align: left;
+            margin-left: 20px;
+        }
+
+        .news-list-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .news-card {
+            background: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-card-body {
+            position: relative; /* 设置相对定位 */
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .news-title {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.2rem;
+            max-height: 3.0rem; /* 基于字体大小和期望的最大行数设置 */
+            overflow: hidden; /* 隐藏溢出的内容 */
+        }
+
+        .news-title a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.2rem;
+            max-height: 3.0rem; /* 基于字体大小和期望的最大行数设置 */
+            overflow: hidden; /* 隐藏溢出的内容 */
+        }
+
+        .news-meta {
+            position: absolute; /* 设置绝对定位 */
+            bottom: 10px; /* 定位到容器底部 */
+            width: calc(100% - 30px); /* 宽度调整，根据padding大小 */
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .news-category {
+            background-image: linear-gradient(to right, transparent, #22b069, transparent);
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+
+        .card-title2 {
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        .card-title2 a {
+            display: inline-block;
+            margin-bottom: 5px;
+            font-size: 24px;
+            color: #e88c8c;
+            text-decoration: none;
+            transition: color .3s;
+        }
+
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
+
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .page-link {
+            position: relative;
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            margin-left: -1px;
+        }
+
+        .pagination {
+            display: -ms-flexbox;
+            display: flex;
+            padding-left: 0;
+            list-style: none;
+            border-radius: .25rem;
+            justify-content: center; /* Center the pagination */
+        }
+
+        .title {
+            font-family: "Ma Shan Zheng", cursive;
+            color: #105013;
+        }
+
+        .main-content {
+            min-height: 150vh; /* 页面主体部分最小高度为视口高度的150% */
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="row">
+        {% include 'registration/navbar.html' %}
+    </div>
+</header>
+<main class="main-content">
+    <div class="container-fluid">
+
+        <!-- 主内容区 -->
+        <div class="row">
+            <div class="col-md-10" style="margin-top: 30px">
+                <h1 class="mb-4 title">新闻列表 - {{ tag1.tag_name }}</h1>
+                <!-- 新闻列表 -->
+                <div class="news-list-container">
+                    {% for news in page_obj %}
+                        <div class="news-card" data-news-id="{{ news.id }}">
+                            <div class="news-card-body">
+                                <span class="news-category">{{ news.category }}</span>
+                                <h5 class="news-title"><a href="{% url 'news_detail' news.id %}">{{ news.title }}</a>
+                                </h5>
+                                <!-- Visual separator -->
+                                <div style="margin-bottom: 5px">
+                                    <hr>
+                                </div>
+                                <div class="news-meta">
+                                    <small class="news-publish-date">发布日期: {{ news.publish_date }}</small>
+                                    <small class="news-reads">阅读量: {{ news.reads }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <div class="col-md-2" style="position: fixed ;right: 10px;bottom:40px">
+                <h4 class="mb-1" style="margin-top: 150px">推荐新闻</h4>
+                <div class="card"
+                     style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); margin-top: 10px;margin-left: 20px">
+                    <div class="card-body">
+                        <!-- 使用ul和li列出新闻项目，去掉了内部的.card结构 -->
+                        <ul class="list-unstyled">
+                            {% for news in recommended_news %}
+                                <li class="mb-3">
+                                    <!-- 直接在这里构建每个新闻项目的结构 -->
+                                    <h5 class="card-title2">
+                                        <a style="font-size: 13px" href="{% url 'news_detail' news.id %}"
+                                          >{{ news.title }}</a>
+                                    </h5>
+                                    {#                        <p class="card-text">- 作者: {{ news.author }}</p>#}
+                                    {#                        <p class="card-text">- 发布日期: {{ news.publish_date }}</p>#}
+                                    <!-- 可以在这里添加一个分隔线，如果你想在项目之间有可视的分割 -->
+                                    {% if not forloop.last %}
+                                        <hr>{% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 分页导航 -->
+        <nav>
+            <ul class="pagination">
+                <!-- Link to the first page -->
+                <li class="page-item {% if page_obj.number == 1 %}disabled{% endif %}">
+                    <a class="page-link" href="?page=1">首</a>
+                </li>
+
+                <!-- Dynamic pagination links -->
+                {% with page_obj.number as current %}
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if num > 1 and num < page_obj.paginator.num_pages %}
+                            {% if current == num %}
+                                <li class="page-item active"><a class="page-link"
+                                                                href="?page={{ num }}">{{ num }}</a></li>
+                            {% elif num >= current|add:'-3' and num <= current|add:'3' %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% elif num == 2 or num == page_obj.paginator.num_pages|add:'-1' %}
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+
+                <!-- Link to the last page -->
+                <li class="page-item {% if page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">尾</a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+</main>
+{% include 'registration/footer.html' %}
+<!-- 引入Bootstrap JS和依赖 -->
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>
+

@@ -1,0 +1,75 @@
+.site-footer {
+    background-color: #f8f9fa;
+    padding: 40px 0;
+    clip-path: polygon(0 15%, 100% 0, 100% 85%, 0 100%);
+    background-image: linear-gradient(to right, #22b069, #bde298);
+    color: #ffffff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.footer-newsletter, .footer-links {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.footer-newsletter h2 {
+    font-size: 24px;
+}
+
+.footer-newsletter p {
+    font-size: 16px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.footer-column {
+    margin: 20px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-column h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.footer-column ul, .footer-column ul li a {
+    list-style: none;
+    padding: 0;
+    color: #ffffff;
+    text-decoration: none;
+    display: block;
+    transition: transform 0.3s ease, color 0.3s;
+}
+
+.footer-column ul li a:hover {
+    color: #ddf4e8;
+    transform: scale(1.05);
+}
+
+.social-links a {
+    display: inline-block;
+    margin-right: 15px;
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: translateY(-5px);
+}
+.footer-bottom {
+    text-align: center; /* 文本居中 */
+    padding: 20px 0; /* 上下内边距，可以根据需要调整 */
+    color: #fff; /* 设置文字颜色为白色 */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer-links {
+        justify-content: space-around;
+    }
+}

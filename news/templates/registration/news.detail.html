@@ -1,0 +1,389 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ news.title }}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <style>
+
+        body {
+            background-image: linear-gradient(to bottom, #ffffff 0%, #ffffff 100%);
+            height: auto;
+            min-height: 100vh;
+            overflow-y: auto;
+            background-attachment: fixed; /* 保持背景固定，不随页面滚动 */
+        }
+
+        article {
+            font-family: 'Noto Sans', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            margin-top: 50px;
+        }
+
+        article h1 {
+            font-family: "Ma Shan Zheng", cursive;
+            font-size: 40px;
+            color: #105013;
+            margin-bottom: 20px;
+        }
+
+        article p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .news-content {
+            font-family: 'Noto Sans', sans-serif;
+            color: #413d3d;
+            line-height: 1.6;
+        }
+
+        .news-content h1, .news-content h2, .news-content h3,
+        .news-content h4, .news-content h5, .news-content h6 {
+            color: #17171a;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .news-content p {
+            margin-bottom: 5px;
+            text-indent: 2em;
+            font-size: 16px;
+        }
+
+
+        .news-content img {
+            display: block; /* 将图片设置为块级元素 */
+            margin: 20px auto; /* 上下保留20px间距，左右自动调整以实现居中 */
+            max-width: 100%; /* 确保图片不会超过其容器的宽度 */
+            height: 75%; /* 保持图片的原始宽高比 */
+
+        }
+
+        .news-content a {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .news-content blockquote {
+            border-left: 4px solid #eee;
+            padding-left: 15px;
+            color: #666;
+            margin: 20px 0;
+        }
+
+
+        .text-muted {
+            font-size: 12px;
+            color: #a7b4c2;
+        }
+
+        .news-actions .details-highlights {
+            font-size: 10px;
+        }
+
+        .news-actions .details-highlights span {
+            cursor: pointer;
+        }
+
+        .news-actions .action-buttons .btn {
+            font-size: 10px;
+        {#padding:  10px;#} transition: all 0.3s ease;
+        }
+
+        .news-actions .action-buttons .btn-like {
+            margin-right: 10px;
+        }
+
+        .news-actions .action-buttons .btn:hover {
+            background-color: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
+
+        .fa-solid {
+            margin-right: 5px;
+        }
+
+
+        .details-highlights {
+            /* 添加背景颜色，轻微透明 */
+        {#background-color: rgba(255, 255, 255, 0.8);#} padding: 10px;
+            border-radius: 5px;
+            display: inline-block; /* 使其不占满整行 */
+        }
+
+        .details-highlights .reads, .details-highlights .likes {
+            font-weight: bold; /* 字体加粗 */
+            margin-right: 20px; /* 在元素之间添加一些间隔 */
+            color: #007bff; /* Bootstrap的主题颜色 */
+        }
+
+        .details-highlights .likes {
+            /* 为点赞数添加特殊样式，例如改变颜色 */
+            color: #dc3545; /* Bootstrap的危险色，或者选择你喜欢的颜色 */
+        }
+
+        .fixed-action-buttons {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 0 5px 5px 0;
+            padding: 10px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1030;
+        }
+
+        .fixed-action-buttons .btn {
+            display: block;
+            width: 100%; /* 确保按钮宽度充满容器 */
+            margin-bottom: 10px; /* 适当减少按钮间距，根据实际情况调整 */
+            font-size: 14px; /* 字体大小适中 */
+        }
+
+        .fixed-action-buttons .btn:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .comment-form textarea {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+
+        .comment-form input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .comment-form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .card-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .card-footer {
+            background-color: #f8f5f5;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .details-highlights span, .action-buttons button {
+            font-size: 14px; /* 调整为所需的大小 */
+        }
+
+        .card-title2 .card-text {
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+
+        .card-title2 a {
+            display: inline-block;
+            margin-bottom: 5px;
+            font-size: 24px;
+            color: #e88c8c;
+            text-decoration: none;
+            transition: color .3s;
+        }
+
+        .card-text {
+            font-size: 15px;
+        }
+
+        /* 进度条样式 */
+        /* 进度条样式 */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 8px;
+            background-color: #007bff; /* 单色背景，可替换为渐变色 */
+            background-image: linear-gradient(to right, #4facfe 0%, #22b069 100%); /* 渐变色效果 */
+            z-index: 1031; /* 确保进度条位于大多数元素之上 */
+            transition: width 0.5s ease-out; /* 添加过渡动画效果 */
+        }
+
+        .main-content {
+            min-height: 150vh; /* 页面主体部分最小高度为视口高度的150% */
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="row">
+        {% include 'registration/navbar.html' %}
+    </div>
+</header>
+<main class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 新闻详情和评论区域 -->
+            <div class="col-md-11">
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <div class="fixed-action-buttons">
+                            <form action="{% url 'like_news' news.id %}" method="post" class="mb-2">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-primary btn-like w-100">
+                                    <i class="fa-solid fa-thumbs-up"></i> 点赞
+                                </button>
+                            </form>
+                            <form action="{% url 'collect_news' news.id %}" method="post" class="mb-2">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-primary btn-collect w-100">
+                                    <i class="fa-solid fa-bookmark"></i> 收藏
+                                </button>
+                            </form>
+                            <!-- 添加评论按钮 -->
+                            <a href="#comments-section" class="btn btn-outline-primary btn-comment w-100">
+                                <i class="fa-solid fa-comments"></i> 评论
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <article>
+                            <h1>{{ news.title }}</h1>
+                            <p>{{ news.author }}</p>
+                            <div class="text-muted">{{ news.publish_date }} {{ news.source }}</div>
+                            <div style="height: 25px"></div>
+                            <div class="news-content">{{ news.content|safe }}</div>
+                        </article>
+                        <hr> <!-- 添加横线 -->
+                        <div class="news-actions">
+                            <div class="text-end mt-1 details-highlights ">
+                                <span class="reads me-3"><i class="fa-solid fa-eye"></i> 阅读量：{{ news.reads }}</span>
+                                <span class="likes me-3"><i
+                                        class="fa-solid fa-thumbs-up"></i> 点赞数: {{ news.likes }}</span>
+                            </div>
+
+                        </div>
+                        <!-- 评论显示 -->
+                        <section id="comments-section" style="margin-top: 20px">
+                            <h3 style="font-size: 30px ;color: #347145">评论</h3>
+                            <hr> <!-- 在按钮之间添加横线 -->
+                            {% for comment in news.comment_set.all %}
+                                <div class="card mb-3 shadow-sm"> <!-- 添加阴影效果 -->
+                                    <div class="card-body d-flex">
+                                        <!-- 评论者头像（示例） -->
+                                        <img src="
+
+
+                                                {% if comment.user.avatar %}{{ comment.user.avatar.url }}{% else %}{% static 'img/bg.jpg' %}{% endif %}"
+                                             class="rounded-circle me-3" alt="Avatar"
+                                             style="width: 48px; height: 48px;">
+                                        <div>
+
+                                            <!-- 评论者用户名和时间戳 -->
+                                            <div class="text-muted">
+                                                <small>{{ comment.user.username }}
+                                                    · {{ comment.comment_time|date:"Y-m-d H:i" }}</small>
+                                            </div>
+                                            <!-- 评论内容 -->
+                                            <p class="card-text">{{ comment.content }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </section>
+
+                        <!-- 评论表单，仅对登录用户显示 -->
+                        {% if user.is_authenticated %}
+                            <div class="comment-form mt-4">
+                                <h4>添加评论</h4>
+                                <form action="{% url 'add_comment_to_news' news.id %}" method="post" class="mt-3">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                    <textarea name="comment" class="form-control" cols="40" rows="3"
+                                              placeholder="添加你的评论..."></textarea>
+                                    </div>
+                                    <div class="d-grid">
+                                        <input type="submit" class="btn btn-primary" value="提交评论">
+                                    </div>
+                                </form>
+                            </div>
+                        {% else %}
+                            <p class="mt-4"><a href="{% url 'login' %}?next={{ request.path }}">登录</a>or<a
+                                    href="{% url 'register' %}?next={{ request.path }}">注册</a> 后才能发表评论。</p>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            <!-- 推荐新闻区域 -->
+            <div class="col-md-2" style="position: fixed ;right: 10px;bottom:40px">
+                <h4 class="mb-1" style="margin-top: 150px">推荐新闻</h4>
+                <div class="card"
+                     style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); margin-top: 10px;margin-left: 20px">
+                    <div class="card-body">
+                        <!-- 使用ul和li列出新闻项目，去掉了内部的.card结构 -->
+                        <ul class="list-unstyled">
+                            {% for news in recommended_news %}
+                                <li class="mb-3">
+                                    <!-- 直接在这里构建每个新闻项目的结构 -->
+                                    <h5 class="card-title2">
+                                        <a style="font-size: 13px" href="{% url 'news_detail' news.id %}"
+                                           >{{ news.title }}</a>
+                                    </h5>
+                                    {#                        <p class="card-text">- 作者: {{ news.author }}</p>#}
+                                    {#                        <p class="card-text">- 发布日期: {{ news.publish_date }}</p>#}
+                                    <!-- 可以在这里添加一个分隔线，如果你想在项目之间有可视的分割 -->
+                                    {% if not forloop.last %}
+                                        <hr>{% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% include 'registration/footer.html' %}
+
+<!-- 引入Bootstrap JS及其依赖 -->
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/js/bootstrap.min.js' %}"></script>
+<script>
+    // 当页面滚动时，更新进度条
+    window.onscroll = function () {
+        updateProgressBar()
+    };
+
+    function updateProgressBar() {
+        var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        var scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+    }
+</script>
+
+</body>
+</html>

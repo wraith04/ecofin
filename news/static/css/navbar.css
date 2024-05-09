@@ -1,0 +1,105 @@
+/* 全局设置 */
+.navbar {
+    padding: 0.5rem 1rem; /* 细微调整导航栏内边距以获得更好的视觉效果 */
+    background: linear-gradient(45deg, #aee3ae, #f2f5cc); /* 添加现代感强烈的渐变背景 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加轻微的阴影以提升层次感 */
+
+}
+
+.navbar-brand img {
+    transition: transform 0.3s ease; /* 添加图片变换动画，让用户交互更加有趣 */
+}
+
+.navbar-brand:hover img {
+    transform: rotate(360deg); /* 鼠标悬停时执行360度旋转动画 */
+}
+
+/* 导航链接样式 */
+.nav-link {
+    color: #120f0f !important; /* 调整为白色以对比深色背景 */
+    margin-right: 1rem; /* 保持右边距，保证间隔均匀 */
+    transition: color 0.2s ease-in-out; /* 平滑过渡颜色变化 */
+    font-size: large;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #3289de !important; /* 悬停和激活状态下使用亮色强调 */
+    background-color: transparent;
+}
+
+
+/* 用户互动区域样式 */
+.user-interaction img, .user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* 圆形头像 */
+    transition: transform 0.3s ease-in-out; /* 添加变换效果的过渡动画 */
+}
+
+.user-interaction img:hover, .user-info img:hover {
+    transform: scale(1.5); /* 鼠标悬停时轻微放大 */
+}
+
+/* 搜索框与按钮 */
+.form-control {
+    background-color: rgba(227, 217, 217, 0.2); /* 半透明背景 */
+    color: #105013; /* 白色字体 */
+    border: 2px solid rgb(50, 137, 222); /* 边框 */
+    border-radius: 20px; /* 圆角边框 */
+    transition: all 0.3s ease-in-out;
+    position: relative; /* 必须设置position属性，z-index才会生效 */
+    z-index: 1000; /* 确保这个值高于其他元素 */
+}
+
+.form-control:focus {
+    background-color: rgb(244, 251, 231); /* 聚焦时背景更亮 */
+    color: #e80a2b;
+    border-color: #7ec4c9; /* 聚焦时边框颜色 */
+}
+
+.btn.leaf-button_1, .btn.leaf-button_2 {
+    background-color: #22b069; /* 按钮背景颜色 */
+    color: #000; /* 按钮文字颜色 */
+    border: none;
+    border-radius: 50px; /* 圆角 */
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn.leaf-button_1 {
+    position: relative; /* 必须设置position属性，z-index才会生效 */
+    z-index: 1000; /* 确保这个值高于其他元素 */
+}
+
+.btn.leaf-button_2 {
+    position: relative; /* 必须设置position属性，z-index才会生效 */
+    z-index: 1000; /* 确保这个值高于其他元素 */
+}
+
+.btn.leaf-button_1:hover, .btn.leaf-button_2:hover {
+    background-color: #105013; /* 鼠标悬停时变为淡黄色 */
+    color: #000;
+}
+
+/* 响应式调整 */
+@media (max-width: 992px) {
+    .navbar-toggler {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+}
+
+/* 修改或添加的部分 */
+.website-name {
+    font-weight: bold;
+    color: #FFFFFF; /* 调整为白色以对比背景 */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* 文字阴影增加可读性 */
+    transition: color 0.3s ease;
+}
+
+.website-name:hover {
+    color: #67814e;
+}
+

@@ -1,0 +1,131 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('{% static 'img/bg.jpg' %}');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .login-form {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-control {
+            border-radius: 25px;
+            border: 1px solid #ced4da;
+            padding-left: 24px;
+            margin-bottom: 20px;
+        }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .leaf-button {
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #4CAF50; /* 文字颜色为绿色 */
+            cursor: pointer;
+            padding: 0px 40px; /* 显著减小左右填充以减小宽度 */
+            display: block;
+            margin-top: 10px; /* 减小按钮之间的外边距，使其更紧凑 */
+            margin-left: auto;
+            margin-right: auto;
+            text-transform: uppercase;
+            line-height: 2.5em; /* 行高保持不变 */
+            letter-spacing: 1px; /* 字母间距保持不变 */
+            font-size: 1em; /* 字体大小保持不变 */
+            outline: none;
+            position: relative;
+            border: 2px solid #4CAF50; /* 边框颜色保持不变，边框宽度保持不变 */
+            background-color: transparent;
+            border-radius: 0 12px 12px; /* 边框圆角保持不变 */
+            transition: all 0.3s;
+        }
+
+        .leaf-button:before {
+            content: "";
+            position: absolute;
+            right: -2px; /* 位置保持不变 */
+            bottom: -2px; /* 位置保持不变 */
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 25px 25px; /* 三角形大小保持不变 */
+            border-color: transparent transparent #4CAF50 transparent; /* 三角形颜色为绿色 */
+            z-index: 1;
+        }
+
+        .leaf-button:hover,
+        .leaf-button.hover {
+            border-color: #224625; /* 鼠标悬浮时边框颜色 */
+            color: #388E3C; /* 鼠标悬浮时文字颜色 */
+        }
+
+
+        h2 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="login-form">
+        <h2 class="text-center">登录</h2>
+        <form method="post" action="{% url 'login' %}?next={{ request.GET.next }}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="输入用户名">
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="输入密码">
+            </div>
+            <div class="form-group">
+                {{ form.captcha }}
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+
+                {% if request.GET.next %}
+                    <a href="{{ request.GET.next }}" class="btn leaf-button">返回</a>
+                {% else %}
+                    <a href="{% url 'home' %}" class="btn leaf-button">返回首页</a>
+                {% endif %}
+                <button type="submit" class="leaf-button">登录</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

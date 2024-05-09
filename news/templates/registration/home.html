@@ -1,0 +1,521 @@
+{% load static %}
+{% load my_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFin</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <!-- Additional CSS -->
+    <style>
+        /* 头部导航栏样式 */
+        @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+        body {
+            background-image: linear-gradient(to bottom, #ffffff 0%, #ffffff 100%);
+            height: auto;
+            min-height: 100vh;
+            overflow-y: auto;
+            background-attachment: fixed; /* 保持背景固定，不随页面滚动 */
+        }
+
+
+        .container-fluid {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+
+        }
+
+        .carousel-inner .carousel-item {
+            text-align: center;
+        }
+
+        .carousel-inner .carousel-item .card {
+            display: inline-block;
+            margin: 0 auto;
+        }
+
+        .news-peak-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 20px; /* 增加间隔 */
+            margin: 40px 0; /* 增加上下边距 */
+        }
+
+        .news-item {
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            width: 120px; /* 增加宽度 */
+            height: auto; /* 根据内容自动调整高度 */
+            border-radius: 10px;
+            padding: 15px; /* 增加内边距 */
+            background-color: #22b069;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* 隐藏超出内容 */
+            margin-top: 20px;
+        }
+
+        .news-item:hover {
+            transform: scale(1.2); /* 调整缩放比例 */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .news-item a, .news-item span {
+            font-size: 0.68em; /* 调整字体大小 */
+            font-weight: bold;
+            color: #eff8ef; /* 统一字体颜色 */
+            text-decoration: none;
+            text-align: center; /* 文字居中显示 */
+        }
+
+        .news-item span {
+            margin-top: 10px; /* 调整间距 */
+        }
+
+
+        /* 最新新闻容器的样式 */
+        .news1-grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px;
+            margin-left: 50px;
+        }
+
+        /* 卡片基础样式 */
+        .card.news-item1 {
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
+            transition: transform .3s ease, box-shadow .3s ease;
+        {#position: relative;#}{# z-index: 1; /* 确保内容位于背景之上 */#}
+        }
+
+        .card.news-item1::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('{% static 'img/card_bg.jpg' %}');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5; /* 设置背景图片透明度 */
+            z-index: -1; /* 确保背景图片位于内容之后 */
+        }
+
+        .card.news-item1:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .2);
+        }
+
+        /* 大卡片样式 */
+        .card.news-item1.large {
+            grid-column: span 2;
+        }
+
+        /* 高卡片样式 */
+        .card.news-item1.tall {
+            grid-row: span 2;
+        }
+
+        /* 卡片内文本内容样式 */
+        .card-body1 {
+            padding: 20px;
+            max-height: 200px;
+        {#overflow: auto;#}
+        }
+
+        .card-title a {
+            display: inline-block;
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #120f0f;
+            text-decoration: none;
+            transition: color .3s;
+        }
+
+        .card-title a:hover {
+            color: #0056b3;
+        }
+
+        .card-text {
+            font-size: 12px;
+            color: #74777a;
+            margin-bottom: 8px;
+        }
+
+        .card-text2 {
+            font-size: 15px;
+            color: #203f20;
+            margin-bottom: 8px;
+            font-family: "Ma Shan Zheng", cursive;
+        }
+
+        /* 调整卡片标题和文本的字体 */
+        .card-title, .card-text, .h3-title {
+            font-family: "Ma Shan Zheng", cursive;
+        }
+
+        .card-title2 {
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        .card-title2 a {
+            display: inline-block;
+            margin-bottom: 5px;
+            font-size: 24px;
+            color: #e88c8c;
+            text-decoration: none;
+            transition: color .3s;
+        }
+
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
+
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .page-link {
+            position: relative;
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            margin-left: -1px;
+        }
+
+        .pagination {
+            display: -ms-flexbox;
+            display: flex;
+            padding-left: 0;
+            list-style: none;
+            border-radius: .25rem;
+            justify-content: center; /* Center the pagination */
+        }
+
+        @keyframes dcAnimation {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        /* More styling as needed */
+        .divider-custom {
+            border: 0;
+            height: 2px;
+            background-image: linear-gradient(to right, transparent, #22b069, transparent);
+            margin: 20px 0;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            animation: dcAnimation 2s ease-out forwards;
+        }
+
+        /* 新闻部分样式 */
+
+        .news-section2 {
+            margin: 50px auto;
+            max-width: 1200px;
+        }
+
+        .tag-title2 {
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #3289de;
+            margin-bottom: 20px;
+            margin-left: 20px;
+        }
+
+        /* 新闻网格容器 */
+
+        .news-list-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .news-card {
+            background: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-card-body {
+            position: relative; /* 设置相对定位 */
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .news-title {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.2rem;
+            max-height: 3.0rem; /* 基于字体大小和期望的最大行数设置 */
+            overflow: hidden; /* 隐藏溢出的内容 */
+        }
+
+        .news-title a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.2rem;
+            max-height: 3.0rem; /* 基于字体大小和期望的最大行数设置 */
+            overflow: hidden; /* 隐藏溢出的内容 */
+        }
+
+        .news-meta {
+            position: absolute; /* 设置绝对定位 */
+            bottom: 10px; /* 定位到容器底部 */
+            width: calc(100% - 30px); /* 宽度调整，根据padding大小 */
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .news-category {
+            background-image: linear-gradient(to right, transparent, #22b069, transparent);
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        .tag-title-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* 确保标题和按钮分别靠左和靠右 */
+            margin-top: 50px;
+        }
+
+        .tag-title2 {
+            margin-left: 20px; /* 移除默认的margin以避免影响布局 */
+            flex-grow: 1; /* 允许标题占用多余的空间 */
+        }
+
+        .read-more-btn {
+            display: inline-block;
+            background-color: #f2f5cc;
+            color: #3289de;
+            padding: 2px 5px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-right: 80px; /* 根据需要调整 */
+            font-size: 15px;
+            /* 不再需要float: right; 因为我们使用了Flexbox */
+        }
+
+        .read-more-btn:hover {
+            background-color: #22b069;
+        }
+
+        @keyframes hrAnimation {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        hr2 {
+            border: none;
+            height: 2px;
+            background-image: linear-gradient(to right, #347145, #22b069, #347145);
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 0; /* 开始时宽度为0 */
+            animation: hrAnimation 2s ease-out forwards; /* 2秒内完成动画 */
+        }
+
+        .main-content {
+            min-height: 150vh; /* 页面主体部分最小高度为视口高度的150% */
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <div class="row">
+        {% include 'registration/navbar.html' %}
+    </div>
+</header>
+<main class="main-content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div>
+                <h3 class="h3-title" style="color: #e80a2b ;margin: 30px 0 20px 20px; font-size: 40px">热门焦点</h3>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 100px">
+            <div class="news-peak-container">
+                {% for news in hottest_news %}
+                    <div class="news-item" style="height: calc(140px + {{ news.height_ratio }}%);">
+                        <a href="{% url 'news_detail' news.id %}">{{ news.title }}</a>
+                        <span>阅读量: {{ news.reads }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        {#    <div data-height="20px"></div>#}
+        <div class="divider-custom"></div>
+        <div class="row">
+            <!-- 最新新闻区 -->
+            <div class="col-md-10">
+                <h3 class="h3-title" style="color: #105013 ;margin: 0 0 20px 20px; font-size: 40px">新闻</h3>
+                <div class="news1-grid-container">
+                    {% for news in page_obj %}
+                        <div class="card news-item1 {% if forloop.first %}large{% elif forloop.counter|divisibleby:3 %}tall{% endif %}">
+                            <div class="card-body1">
+                                <h5 class="card-title"><a href="{% url 'news_detail' news.id %}">{{ news.title }}</a>
+                                </h5>
+                                <p class="card-text">- 作者: {{ news.author }}</p>
+                                <p class="card-text">- 发布日期: {{ news.publish_date }}</p>
+                                <p class="card-text2">- 摘要: {{ news.content|snippet:300 }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <hr>
+
+                {% for tag, news_list in news_by_tag.items %}
+                    <div class="news-section2">
+                        <div class="tag-title-container">
+                            <h3 class="tag-title2">{{ tag.tag_name }}</h3>
+                            <a href="{% url 'news_by_tag' tag.id %}" class="read-more-btn">阅读更多</a>
+                            <div style="clear: both;"></div>
+                        </div>
+                        <div class="news-list-container">
+                            {% for news in news_list %}
+                                <div class="news-card" data-news-id="{{ news.id }}">
+                                    <div class="news-card-body">
+                                        <span class="news-category">{{ news.category }}</span>
+                                        <h5 class="news-title"><a
+                                                href="{% url 'news_detail' news.id %}">{{ news.title }}</a></h5>
+                                        <!-- Visual separator -->
+                                        <div style="margin-bottom: 5px">
+                                            <hr>
+                                        </div>
+                                        <div class="news-meta">
+                                            <small class="news-publish-date">发布日期: {{ news.publish_date }}</small>
+                                            <small class="news-reads">阅读量: {{ news.reads }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+            </div>
+
+            <!-- 推荐新闻区 -->
+            <div class="col-md-2" style="position: fixed ;right: 10px;bottom:40px">
+                <h4 class="mb-1" style="margin-top: 150px;">推荐新闻</h4>
+                <div class="card"
+                     style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); margin-top: 10px;margin-left: 20px">
+                    <div class="card-body">
+                        <!-- 使用ul和li列出新闻项目，去掉了内部的.card结构 -->
+                        <ul class="list-unstyled">
+                            {% for news in recommended_news %}
+                                <li class="mb-3">
+                                    <!-- 直接在这里构建每个新闻项目的结构 -->
+
+                                    <h5 class="card-title2">
+                                        <a style="font-size: 13px" href="{% url 'news_detail' news.id %}"
+                                          >{{ news.title }}</a>
+                                    </h5>
+                                    {#                        <p class="card-text">- 作者: {{ news.author }}</p>#}
+                                    {#                        <p class="card-text">- 发布日期: {{ news.publish_date }}</p>#}
+                                    <!-- 可以在这里添加一个分隔线，如果你想在项目之间有可视的分割 -->
+                                    {% if not forloop.last %}
+                                        <hr>{% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- 分页导航 -->
+        <nav>
+            <ul class="pagination">
+                <!-- Link to the first page -->
+                <li class="page-item {% if page_obj.number == 1 %}disabled{% endif %}">
+                    <a class="page-link" href="?page=1">首</a>
+                </li>
+
+                <!-- Dynamic pagination links -->
+                {% with page_obj.number as current %}
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if num > 1 and num < page_obj.paginator.num_pages %}
+                            {% if current == num %}
+                                <li class="page-item active"><a class="page-link"
+                                                                href="?page={{ num }}">{{ num }}</a></li>
+                            {% elif num >= current|add:'-3' and num <= current|add:'3' %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% elif num == 2 or num == page_obj.paginator.num_pages|add:'-1' %}
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+
+                <!-- Link to the last page -->
+                <li class="page-item {% if page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">尾</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</main>
+<!-- 页脚开始 -->
+{% include 'registration/footer.html' %}
+
+<!-- 页脚结束 -->
+
+<script src="{% static 'js/jquery-3.x.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

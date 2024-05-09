@@ -1,0 +1,312 @@
+{% load static %}
+{% load my_filters %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索结果</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <style>
+        .card-title2 {
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        .card-title2 a {
+            display: inline-block;
+            margin-bottom: 5px;
+            font-size: 24px;
+            color: #e88c8c;
+            text-decoration: none;
+            transition: color .3s;
+        }
+
+        .card-text {
+            font-size: 12px;
+            color: #74777a;
+            margin-bottom: 8px;
+        }
+
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
+
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .page-link {
+            position: relative;
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            margin-left: -1px;
+        }
+
+        .pagination {
+            display: -ms-flexbox;
+            display: flex;
+            padding-left: 0;
+            list-style: none;
+            border-radius: .25rem;
+            justify-content: center; /* Center the pagination */
+        }
+
+        #advanced-search-options .form-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .btn-outline-primary {
+            border-color: #007bff;
+            color: #007bff;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-outline-secondary {
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .input-group .form-control {
+            border-right: 0;
+        }
+
+        .input-group .btn-outline-primary {
+            border-left: 0;
+        }
+
+        /* 调整搜索按钮图标与文字的间距 */
+        .btn > i {
+            margin-right: 5px;
+        }
+
+        /* 优化高级搜索动画效果 */
+        #advanced-search-options {
+            transition: all .3s ease-in-out;
+        }
+
+        /* 高级搜索按钮旋转图标 */
+        .btn[onclick*="toggleAdvancedSearch"] .fas {
+            transition: transform .3s ease;
+        }
+
+        .btn[onclick*="toggleAdvancedSearch"].collapsed .fas {
+            transform: rotate(-180deg);
+        }
+
+        .divider-custom {
+            border: 0;
+            height: 2px;
+            background-image: linear-gradient(to right, transparent, #22b069, transparent);
+            margin: 20px 0;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .h3-title {
+            font-family: "Ma Shan Zheng", cursive;
+            font-size: 40px
+        }
+
+        .list-group-item-action {
+            background-color: #f8f9fa;
+            border: 1px solid #e3e6f0;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .list-group-item-action:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .mb-1 {
+            color: #495057;
+            font-weight: bold;
+        }
+
+        .card-text {
+            font-size: 0.7rem;
+            color: #6c757d;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 0.5rem;
+            margin-top: 20px;
+        }
+
+        .divider-custom {
+            border-top: 1px solid #e3e6f0;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        {% include 'registration/navbar.html' %}
+    </div>
+    <div class="row">
+        <div class="col-md-10" style="margin-top: 15px">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-11">
+                    <div class="container mt-4">
+                        <h3 class="h3-title" style="color: #105013">搜索结果</h3>
+                        <div class="mt-3">
+                            <form action="{% url 'search_results' %}" method="GET" class="mb-3">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="搜索..." name="query"
+                                           value="{{ query }}">
+                                    <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i>
+                                        搜索
+                                    </button>
+                                </div>
+                                <!-- 切换按钮 -->
+                                <div class="mt-2 d-flex justify-content-between">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                            onclick="toggleAdvancedSearch()">高级搜索 <i
+                                            class="fas fa-chevron-down"></i></button>
+                                </div>
+                                <!-- 高级搜索选项，初始时隐藏 -->
+                                <div id="advanced-search-options" style="display: none;">
+                                    <div class="row g-3 mt-2">
+                                        <div class="col-md-6">
+                                            <label for="start_date" class="form-label">开始日期:</label>
+                                            <input type="date" id="start_date" name="start_date" class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="end_date" class="form-label">结束日期:</label>
+                                            <input type="date" id="end_date" name="end_date" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="divider-custom"></div>
+                        {% if search_results %}
+                            <div class="list-group">
+                                {% for result in page_obj %}
+                                    <a href="{% url 'news_detail' result.id %}"
+                                       class="list-group-item list-group-item-action">
+                                        <h5 class="mb-1">{{ result.title|highlight:query }}</h5>
+                                        <div class="card-text">- 作者: {{ result.author|highlight:query }}</div>
+                                        <div class="card-text">- 发布日期: {{ result.publish_date }}</div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="alert-info" role="alert">
+                                没有找到与 "{{ query }}" 相关的结果。
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 推荐新闻区 -->
+        <div class="col-md-2" style="position: fixed ;right: 30px;bottom:40px">
+            <h4 class="mb-0" style="margin-top: 150px">推荐新闻</h4>
+            <div class="card"
+                 style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); margin-top: 10px;margin-left: 20px">
+                <div class="card-body">
+                    <!-- 使用ul和li列出新闻项目，去掉了内部的.card结构 -->
+                    <ul class="list-unstyled">
+                        {% for news in recommended_news %}
+                            <li class="mb-3">
+                                <!-- 直接在这里构建每个新闻项目的结构 -->
+                                <h5 class="card-title2">
+                                    <a style="font-size: 13px" href="{% url 'news_detail' news.id %}"
+                                       >{{ news.title }}</a>
+                                </h5>
+                                {#                        <p class="card-text">- 作者: {{ news.author }}</p>#}
+                                {#                        <p class="card-text">- 发布日期: {{ news.publish_date }}</p>#}
+                                <!-- 可以在这里添加一个分隔线，如果你想在项目之间有可视的分割 -->
+                                {% if not forloop.last %}
+                                    <hr>{% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<nav style="margin-top: 30px">
+    <ul class="pagination">
+        <!-- Link to the first page -->
+        <li class="page-item {% if page_obj.number == 1 %}disabled{% endif %}">
+            <a class="page-link" href="?page=1{% if query %}&query={{ query|urlencode }}{% endif %}{% if start_date %}&start_date={{ start_date|urlencode }}{% endif %}{% if end_date %}&end_date={{ end_date|urlencode }}{% endif %}">首</a>
+        </li>
+
+        <!-- Dynamic pagination links -->
+        {% with page_obj.number as current %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if num > 1 and num < page_obj.paginator.num_pages %}
+                    {% if current == num %}
+                        <li class="page-item active"><a class="page-link" href="?page={{ num }}{% if query %}&query={{ query|urlencode }}{% endif %}{% if start_date %}&start_date={{ start_date|urlencode }}{% endif %}{% if end_date %}&end_date={{ end_date|urlencode }}{% endif %}">{{ num }}</a></li>
+                    {% elif num >= current|add:"-3" and num <= current|add:"3" %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}{% if query %}&query={{ query|urlencode }}{% endif %}{% if start_date %}&start_date={{ start_date|urlencode }}{% endif %}{% if end_date %}&end_date={{ end_date|urlencode }}{% endif %}">{{ num }}</a></li>
+                    {% elif num == 2 or num == page_obj.paginator.num_pages|add:"-1" %}
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
+
+        <!-- Link to the last page -->
+        <li class="page-item {% if page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if query %}&query={{ query|urlencode }}{% endif %}{% if start_date %}&start_date={{ start_date|urlencode }}{% endif %}{% if end_date %}&end_date={{ end_date|urlencode }}{% endif %}">尾</a>
+        </li>
+    </ul>
+</nav>
+{% include 'registration/footer.html' %}
+
+</div>
+<script src="{% static 'js/jquery-3.x.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+    function toggleAdvancedSearch() {
+        var advancedSearchOptions = document.getElementById("advanced-search-options");
+        var advancedSearchButton = document.querySelector("button[onclick*='toggleAdvancedSearch']");
+        if (advancedSearchOptions.style.display === "none") {
+            advancedSearchOptions.style.display = "block";
+            advancedSearchButton.classList.add("collapsed");
+        } else {
+            advancedSearchOptions.style.display = "none";
+            advancedSearchButton.classList.remove("collapsed");
+        }
+    }
+</script>
+</body>
+</html>
